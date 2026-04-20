@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 import { BookSearchResult } from "../../Types/types";
 
 const TOKEN_KEY = "dashboard_token";
 
 export const useAddCurrentRead = () => {
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -40,6 +42,7 @@ export const useAddCurrentRead = () => {
         setError("Failed to save book");
       } else {
         setSuccess(true);
+        queryClient.invalidateQueries("currentRead");
       }
     } catch {
       setError("Connection error");

@@ -15,6 +15,7 @@ import useScreenSize from "../Services/ScreenSize";
 import BottomBar from "../UI/BottomBar";
 import { QueryClientProvider } from "react-query";
 import { itemsQueryClient } from "../Services/api/ItemsQueryClient";
+import ProtectedRoute from "../UI/ProtectedRoute";
 
 const darkTheme = createTheme({
   palette: {
@@ -52,10 +53,17 @@ function App() {
             className={`${styles.contentContainer}${!isMobile ? ` ${styles.desktop}` : ""}`}
           >
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<About />} />
               <Route path="work" element={<Work />} />
               <Route path="hobbies" element={<Hobbies />} />
-              <Route path="about" element={<About />} />
+              <Route
+                path="dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </div>
           <BottomBar isDarkTheme={isDarkTheme} />

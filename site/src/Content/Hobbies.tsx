@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import GridItem from "../UI/GridItem/GridItem";
+import BookCard from "../UI/BookCard/BookCard";
 import { useItems } from "../Services/hooks/useItems";
 import { compareItemsByOrder } from "../Types/types";
 
@@ -35,9 +36,13 @@ const Hobbies = () => {
               justifyContent="left"
               sx={{ paddingRight: 6, paddingLeft: 6 }}
             >
-              {(items as any[]).sort(compareItemsByOrder).map((item: any) => (
-                <GridItem key={item.id} item={item} />
-              ))}
+              {(items as any[]).sort(compareItemsByOrder).map((item: any) =>
+                subtype === "Books" ? (
+                  <BookCard key={item.id} item={item} />
+                ) : (
+                  <GridItem key={item.id} item={item} />
+                )
+              )}
             </Grid>
           </div>
         )

@@ -1,13 +1,17 @@
+export type BookStatus = 'Reading' | 'Completed' | 'OnHold' | 'Pending';
+
 export type ItemProps = {
   id: string;
   type: string;
-  title: string
+  title: string;
+  author?: string;
   rating?: number;
   opinion: string;
   image: string;
   subtype: string;
   order: number;
-  currentRead?: boolean;
+  status?: BookStatus;
+  updatedAt?: string;
 }
 
 export function compareItemsByOrder(a: any, b: any) {

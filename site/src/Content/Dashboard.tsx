@@ -22,7 +22,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-
+      <Typography variant="h5" sx={{ mb: 2 }}>Currently reading</Typography>
       {isLoadingCurrent ? (
         <CircularProgress />
       ) : currentRead ? (

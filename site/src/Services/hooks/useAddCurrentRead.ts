@@ -34,7 +34,9 @@ export const useAddCurrentRead = () => {
           body: JSON.stringify({
             id: book.openLibraryId,
             title: book.title,
+            author: book.author,
             image: book.thumbnail ?? "",
+            status: 'Reading',
           }),
         }
       );

@@ -23,7 +23,7 @@ const Hobbies = () => {
   console.log(itemsBySubtype);
   return (
     <div>
-      <h1>Hobbies</h1>
+      <h1>My Interests</h1>
       {Object.entries(itemsBySubtype).map(
         ([subtype, items]: [string, unknown]) => (
           <div key={subtype}>

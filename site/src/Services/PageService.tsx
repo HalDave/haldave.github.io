@@ -15,7 +15,7 @@ export const getPage = (pageName:string):{
     case 'Work':
       return { icon: <WorkIcon />, link: 'work', title: 'Work' };
     case 'Hobbies':
-      return { icon: <VideogameAssetIcon />, link: 'hobbies', title: 'Hobbies' };
+      return { icon: <VideogameAssetIcon />, link: 'hobbies', title: 'Interests' };
     case 'Dashboard':
       return { icon: <DashboardIcon />, link: 'dashboard', title: 'Dashboard' };
     default:

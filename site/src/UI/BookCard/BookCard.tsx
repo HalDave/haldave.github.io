@@ -102,7 +102,7 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
         </CardContent>
       </Card>
 
-      <Dialog open={expanded} onClose={() => setExpanded(false)} fullScreen={isMobile}>
+      <Dialog open={expanded} onClose={() => setExpanded(false)} fullScreen={isMobile} maxWidth="xs" fullWidth>
         <Card sx={{ height: "100%" }}>
           <CardHeader
             title={item.title}
@@ -136,9 +136,9 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
             )}
             <Typography variant="body1">{item.opinion}</Typography>
           </CardContent>
-          {showActions && item.status && (
-            <CardActions sx={{ px: 2, pb: 2, gap: 1 }}>
-              {item.status !== 'Completed' && (
+          {showActions && (
+            <CardActions sx={{ px: 2, pb: 2, gap: 1, flexWrap: "wrap" }}>
+              {item.status && item.status !== 'Completed' && (
                 <Button
                   size="small"
                   variant="contained"
@@ -149,7 +149,7 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   Completed
                 </Button>
               )}
-              {(item.status === 'OnHold' || item.status === 'Pending' || item.status === 'Completed') && (
+              {item.status && (item.status === 'OnHold' || item.status === 'Pending' || item.status === 'Completed') && (
                 <Button
                   size="small"
                   variant="outlined"
@@ -171,15 +171,11 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   On Hold
                 </Button>
               )}
-            </CardActions>
-          )}
-          {showActions && (
-            <CardActions sx={{ px: 2, pb: 2, justifyContent: "flex-end" }}>
               <IconButton
                 aria-label="delete"
                 disabled={isDeleting}
                 onClick={handleDelete}
-                sx={{ color: "error.main" }}
+                sx={{ color: "error.main", ml: "auto" }}
               >
                 <DeleteOutlineIcon />
               </IconButton>

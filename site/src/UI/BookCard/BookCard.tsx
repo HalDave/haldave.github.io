@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,12 +8,15 @@ import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Close from "@mui/icons-material/Close";
 import { ItemProps, BookStatus } from "../../Types/types";
 import useScreenSize from "../../Services/ScreenSize";
+import { useUpdateBookStatus } from "../../Services/hooks/useUpdateBookStatus";
+import CompletionDialog from "../CompletionDialog/CompletionDialog";
 
 const statusLabel: Record<BookStatus, string> = {
   Completed: "Completed",
@@ -41,9 +45,22 @@ const statusDateLabel = (status?: BookStatus, updatedAt?: string): string | null
   return null;
 };
 
-const BookCard = ({ item }: { item: ItemProps }) => {
+const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolean }) => {
   const { isMobile } = useScreenSize();
   const [expanded, setExpanded] = useState(false);
+  const [completionOpen, setCompletionOpen] = useState(false);
+  const { updateStatus, isLoading } = useUpdateBookStatus();
+
+  const handleStatusChange = async (status: BookStatus) => {
+    await updateStatus(item.id, status);
+    setExpanded(false);
+  };
+
+  const handleCompleted = (rating: number, opinion?: string) => {
+    updateStatus(item.id, 'Completed', rating, opinion);
+    setCompletionOpen(false);
+    setExpanded(false);
+  };
 
   return (
     <Grid item xs={6} sm={4} md={3} lg={2} sx={{ width: "100%" }}>
@@ -111,8 +128,51 @@ const BookCard = ({ item }: { item: ItemProps }) => {
             )}
             <Typography variant="body1">{item.opinion}</Typography>
           </CardContent>
+          {showActions && item.status && (
+            <CardActions sx={{ px: 2, pb: 2, gap: 1 }}>
+              {item.status !== 'Completed' && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="success"
+                  disabled={isLoading}
+                  onClick={() => setCompletionOpen(true)}
+                >
+                  Completed
+                </Button>
+              )}
+              {(item.status === 'OnHold' || item.status === 'Pending' || item.status === 'Completed') && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  disabled={isLoading}
+                  onClick={() => handleStatusChange('Reading')}
+                >
+                  {item.status === 'Completed' ? 'Re-read' : 'Resume Reading'}
+                </Button>
+              )}
+              {item.status === 'Reading' && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="warning"
+                  disabled={isLoading}
+                  onClick={() => handleStatusChange('OnHold')}
+                >
+                  On Hold
+                </Button>
+              )}
+            </CardActions>
+          )}
         </Card>
       </Dialog>
+      <CompletionDialog
+        open={completionOpen}
+        onClose={() => setCompletionOpen(false)}
+        isLoading={isLoading}
+        onConfirm={handleCompleted}
+      />
     </Grid>
   );
 };

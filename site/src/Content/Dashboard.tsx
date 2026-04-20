@@ -45,7 +45,7 @@ const Dashboard = () => {
       ) : (
         <Grid container columnSpacing={1} direction="row" sx={{ paddingRight: 6, paddingLeft: 6 }}>
           {books.map((item) => (
-            <BookCard key={item.id} item={item} />
+            <BookCard key={item.id} item={item} showActions />
           ))}
         </Grid>
       )}

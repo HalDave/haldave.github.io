@@ -45,6 +45,7 @@ export const useAddCurrentRead = () => {
       } else {
         setSuccess(true);
         queryClient.invalidateQueries("currentRead");
+        queryClient.invalidateQueries("Hobbies");
       }
     } catch {
       setError("Connection error");

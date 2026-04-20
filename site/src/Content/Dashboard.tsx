@@ -9,13 +9,17 @@ import FeedbackSnackbar from '../UI/FeedbackSnackbar/FeedbackSnackbar';
 import BookCard from '../UI/BookCard/BookCard';
 import { useBookSearch } from '../Services/hooks/useBookSearch';
 import { useAddCurrentRead } from '../Services/hooks/useAddCurrentRead';
+import { useAddPendingBook } from '../Services/hooks/useAddPendingBook';
 import { useCurrentRead } from '../Services/hooks/useCurrentRead';
 import { useBooks } from '../Services/hooks/useBooks';
 
 const Dashboard = () => {
   const [inputValue, setInputValue] = useState('');
+  const [tbrInput, setTbrInput] = useState('');
   const { data: bookResults, isLoading: isSearching } = useBookSearch(inputValue);
+  const { data: tbrResults, isLoading: isTbrSearching } = useBookSearch(tbrInput);
   const { addCurrentRead, isLoading: isSaving, error: saveError, success } = useAddCurrentRead();
+  const { addPendingBook, isLoading: isTbrSaving, error: tbrError, success: tbrSuccess } = useAddPendingBook();
   const { currentRead, isLoading: isLoadingCurrent } = useCurrentRead();
   const { books, isLoading: isLoadingBooks } = useBooks();
 
@@ -39,7 +43,16 @@ const Dashboard = () => {
 
       <Divider sx={{ my: 4 }} />
 
-      <Typography variant="h5" sx={{ mb: 2 }}>My Books</Typography>
+      <Typography variant="h5" sx={{ mb: 2 }}>To Be Read</Typography>
+      <BookSearchAutocomplete
+        inputValue={tbrInput}
+        options={tbrResults}
+        isLoading={isTbrSearching || isTbrSaving}
+        onInputChange={setTbrInput}
+        onSelect={addPendingBook}
+      />
+
+      <Divider sx={{ my: 4 }} />
       {isLoadingBooks ? (
         <CircularProgress />
       ) : (
@@ -52,6 +65,8 @@ const Dashboard = () => {
 
       <FeedbackSnackbar open={success} message="Book saved as current read!" severity="success" />
       <FeedbackSnackbar open={!!saveError} message={saveError ?? ''} severity="error" autoHideDuration={4000} />
+      <FeedbackSnackbar open={tbrSuccess} message="Book added to To Be Read list!" severity="success" />
+      <FeedbackSnackbar open={!!tbrError} message={tbrError ?? ''} severity="error" autoHideDuration={4000} />
     </div>
   );
 };

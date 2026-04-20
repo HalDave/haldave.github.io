@@ -1,5 +1,4 @@
 import HouseIcon from '@mui/icons-material/House';
-import InfoIcon from '@mui/icons-material/Info';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import WorkIcon from '@mui/icons-material/Work';

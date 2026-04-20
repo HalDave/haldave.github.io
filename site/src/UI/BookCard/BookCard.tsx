@@ -13,9 +13,11 @@ import Dialog from "@mui/material/Dialog";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Close from "@mui/icons-material/Close";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { ItemProps, BookStatus } from "../../Types/types";
 import useScreenSize from "../../Services/ScreenSize";
 import { useUpdateBookStatus } from "../../Services/hooks/useUpdateBookStatus";
+import { useDeleteBook } from "../../Services/hooks/useDeleteBook";
 import CompletionDialog from "../CompletionDialog/CompletionDialog";
 
 const statusLabel: Record<BookStatus, string> = {
@@ -50,6 +52,7 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
   const [expanded, setExpanded] = useState(false);
   const [completionOpen, setCompletionOpen] = useState(false);
   const { updateStatus, isLoading } = useUpdateBookStatus();
+  const { deleteBook, isLoading: isDeleting } = useDeleteBook();
 
   const handleStatusChange = async (status: BookStatus) => {
     await updateStatus(item.id, status);
@@ -59,6 +62,11 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
   const handleCompleted = (rating: number, opinion?: string) => {
     updateStatus(item.id, 'Completed', rating, opinion);
     setCompletionOpen(false);
+    setExpanded(false);
+  };
+
+  const handleDelete = async () => {
+    await deleteBook(item.id);
     setExpanded(false);
   };
 
@@ -163,6 +171,18 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   On Hold
                 </Button>
               )}
+            </CardActions>
+          )}
+          {showActions && (
+            <CardActions sx={{ px: 2, pb: 2, justifyContent: "flex-end" }}>
+              <IconButton
+                aria-label="delete"
+                disabled={isDeleting}
+                onClick={handleDelete}
+                sx={{ color: "error.main" }}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
             </CardActions>
           )}
         </Card>

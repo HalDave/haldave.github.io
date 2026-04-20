@@ -9,8 +9,7 @@ import Image from './Image/Image';
 export default function BottomBar({isDarkTheme}: {isDarkTheme: boolean}) {
   console.log(isDarkTheme)
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" color="primary" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, top: 'auto', bottom: 0, paddingBottom: 1 }}>
+    <AppBar position="static" color="primary" sx={{ paddingBottom: 1 }}>
         <Toolbar variant="dense" sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, width: "100%", minHeight: 'auto !important', paddingTop: { xs: 1, sm: 0 }, paddingBottom: { xs: 1, sm: 0 } }}>
           <Box sx={{
             display: 'flex',
@@ -67,6 +66,5 @@ export default function BottomBar({isDarkTheme}: {isDarkTheme: boolean}) {
           </Box>
         </Toolbar>
       </AppBar>
-    </Box>
   );
 }

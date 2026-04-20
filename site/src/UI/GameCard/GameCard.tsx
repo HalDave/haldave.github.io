@@ -105,7 +105,7 @@ const GameCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
       </Card>
 
       <Dialog open={expanded} onClose={() => setExpanded(false)} fullScreen={isMobile} maxWidth="xs" fullWidth>
-        <Card sx={{ height: "100%" }}>
+        <Card sx={{ height: "100%", overflowY: 'auto' }}>
           <CardHeader
             title={item.title}
             action={

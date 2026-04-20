@@ -11,7 +11,7 @@ export default function BottomBar({isDarkTheme}: {isDarkTheme: boolean}) {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" color="primary" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, top: 'auto', bottom: 0, paddingBottom: 1 }}>
-        <Toolbar variant="dense" sx={{ display: "flex", width: "100%" }}>
+        <Toolbar variant="dense" sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, width: "100%", minHeight: 'auto !important', paddingTop: { xs: 1, sm: 0 }, paddingBottom: { xs: 1, sm: 0 } }}>
           <Box sx={{
             display: 'flex',
             flexDirection: 'row',
@@ -20,7 +20,7 @@ export default function BottomBar({isDarkTheme}: {isDarkTheme: boolean}) {
             gap: 1,
           }}>
             <Typography variant="body2" color="inherit" component="div">
-              Integrated with:
+              Powered by:
             </Typography>
             <Chip
               label="Google Books"
@@ -49,11 +49,11 @@ export default function BottomBar({isDarkTheme}: {isDarkTheme: boolean}) {
             display: 'flex',
             flexDirection: 'row',
             paddingLeft: 2,
-            right: 0,
-            position: 'absolute',
+            right: { xs: 'auto', sm: 0 },
+            position: { xs: 'static', sm: 'absolute' },
             alignItems: 'center',
-            marginRight:2,
-            gap:1
+            marginRight: { xs: 0, sm: 2 },
+            gap: 1,
           }}>
             <Typography variant="body2" color="inherit" component="div">
               This site uses:

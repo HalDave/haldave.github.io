@@ -11,11 +11,6 @@ export const useAddPendingBook = () => {
   const [success, setSuccess] = useState(false);
 
   const addPendingBook = async (book: BookSearchResult) => {
-    if (!book.openLibraryId) {
-      setError("Book has no Open Library ID and cannot be saved");
-      return;
-    }
-
     setIsLoading(true);
     setError(null);
     setSuccess(false);
@@ -32,7 +27,8 @@ export const useAddPendingBook = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            id: book.openLibraryId,
+            googleBooksId: book.googleBooksId,
+            isbn: book.isbn,
             title: book.title,
             author: book.author,
             image: book.thumbnail ?? "",

@@ -24,4 +24,5 @@ export type BookSearchResult = {
   isbn: string | null;
   openLibraryId: string | null;
   thumbnail: string | null;
+  googleBooksId: string;
 };

@@ -3,6 +3,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import WorkIcon from '@mui/icons-material/Work';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const getPage = (pageName:string):{
   icon: JSX.Element;
@@ -10,14 +11,14 @@ export const getPage = (pageName:string):{
   title: string;
 } => {
   switch (pageName) {
-    case 'Home':
-      return { icon: <HouseIcon />, link: '/' , title: 'Dashboard'};
+    case 'About':
+      return { icon: <HouseIcon />, link: '/', title: 'About' };
     case 'Work':
       return { icon: <WorkIcon />, link: 'work', title: 'Work' };
     case 'Hobbies':
       return { icon: <VideogameAssetIcon />, link: 'hobbies', title: 'Hobbies' };
-    case 'About me':
-      return { icon: <InfoIcon />, link: 'about', title: 'About me' };
+    case 'Dashboard':
+      return { icon: <DashboardIcon />, link: 'dashboard', title: 'Dashboard' };
     default:
       return { icon: <QuestionMarkIcon />, link: '/', title: 'Home' };
   }

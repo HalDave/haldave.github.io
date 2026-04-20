@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
+import LockIcon from '@mui/icons-material/Lock';
 import { Link } from "react-router-dom";
 import { getPage } from '../Services/PageService';
 
@@ -35,9 +36,11 @@ export default function SideBar({isMobile, mobileOpen, onClose}: SideBarProps) {
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
         <List>
-          {['Home', 'Work', 'Hobbies', 'About me'].map((text, index) =>
+          {['About', 'Work', 'Hobbies', 'Dashboard'].map((text, index) =>
             (
-              <ListItem key={text} disablePadding>
+              <ListItem key={text} disablePadding
+                secondaryAction={text === 'Dashboard' ? <LockIcon fontSize="small" color="disabled" /> : null}
+              >
                 <ListItemButton component={Link} to={getPage(text).link}>
                   <ListItemIcon>
                     {getPage(text).icon}

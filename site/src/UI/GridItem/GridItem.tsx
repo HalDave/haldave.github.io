@@ -45,12 +45,12 @@ const GridItem = ({ item }: { item: ItemProps }) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 justifyContent: "space-between",
               }}
             >
+              <Chip sx={{ width: "fit-content" }} icon={<StarBorderIcon />} label={item.rating} />
               <Typography variant="body1">{item.title}</Typography>
-              <Chip icon={<StarBorderIcon />} label={item.rating} />
             </CardContent>
           </Grid>
         </Grid>

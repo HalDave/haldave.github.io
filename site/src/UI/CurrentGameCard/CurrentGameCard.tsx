@@ -7,11 +7,11 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ItemProps } from '../../Types/types';
-import { useUpdateBookStatus } from '../../Services/hooks/books/useUpdateBookStatus';
+import { useUpdateGameStatus } from '../../Services/hooks/games/useUpdateGameStatus';
 import CompletionDialog from '../CompletionDialog/CompletionDialog';
 
-const CurrentReadCard = ({ item }: { item: ItemProps }) => {
-  const { updateStatus, isLoading } = useUpdateBookStatus();
+const CurrentGameCard = ({ item }: { item: ItemProps }) => {
+  const { updateStatus, isLoading } = useUpdateGameStatus();
   const [completionOpen, setCompletionOpen] = useState(false);
 
   return (
@@ -20,10 +20,10 @@ const CurrentReadCard = ({ item }: { item: ItemProps }) => {
         <CardMedia component="img" image={item.image} alt={item.title} />
       )}
       <CardContent>
-        <Typography variant="subtitle2" color="text.secondary">Currently reading</Typography>
+        <Typography variant="subtitle2" color="text.secondary">Currently playing</Typography>
         <Typography variant="h6">{item.title}</Typography>
-        {item.author && (
-          <Typography variant="body2" color="text.secondary">{item.author}</Typography>
+        {item.developer && (
+          <Typography variant="body2" color="text.secondary">{item.developer}</Typography>
         )}
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
@@ -59,4 +59,4 @@ const CurrentReadCard = ({ item }: { item: ItemProps }) => {
   );
 };
 
-export default CurrentReadCard;
+export default CurrentGameCard;

@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { BookSearchResult } from "../../Types/types";
+import { GameSearchResult } from "../../../Types/types";
 
 const TOKEN_KEY = "dashboard_token";
 
-export const useAddCurrentRead = () => {
+export const useAddCurrentGame = () => {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const addCurrentRead = async (book: BookSearchResult) => {
+  const addCurrentGame = async (game: GameSearchResult) => {
     setIsLoading(true);
     setError(null);
     setSuccess(false);
@@ -19,7 +19,7 @@ export const useAddCurrentRead = () => {
 
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/books/save`,
+        `${process.env.REACT_APP_API_BASE_URL}/videogames/save`,
         {
           method: "POST",
           headers: {
@@ -27,20 +27,19 @@ export const useAddCurrentRead = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            googleBooksId: book.googleBooksId,
-            isbn: book.isbn,
-            title: book.title,
-            author: book.author,
-            image: book.thumbnail ?? "",
-            status: 'Reading',
+            gameId: game.gameId,
+            title: game.title,
+            developer: game.developer,
+            image: game.thumbnail ?? "",
+            status: "Playing",
           }),
         }
       );
       if (!res.ok) {
-        setError("Failed to save book");
+        setError("Failed to save game");
       } else {
         setSuccess(true);
-        queryClient.invalidateQueries("currentRead");
+        queryClient.invalidateQueries("currentGame");
         queryClient.invalidateQueries("Hobbies");
       }
     } catch {
@@ -50,5 +49,5 @@ export const useAddCurrentRead = () => {
     }
   };
 
-  return { addCurrentRead, isLoading, error, success };
+  return { addCurrentGame, isLoading, error, success };
 };

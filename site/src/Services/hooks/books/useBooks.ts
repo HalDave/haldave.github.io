@@ -1,5 +1,5 @@
-import { useItems } from "./useItems";
-import { ItemProps, compareItemsByOrder } from "../../Types/types";
+import { useItems } from "../useItems";
+import { ItemProps, compareItemsByOrder } from "../../../Types/types";
 
 export const useBooks = () => {
   const { data, isLoading } = useItems("Hobbies");

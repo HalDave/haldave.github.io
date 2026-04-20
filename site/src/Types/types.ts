@@ -1,16 +1,19 @@
 export type BookStatus = 'Reading' | 'Completed' | 'OnHold' | 'Pending';
 
+export type GameStatus = 'Playing' | 'Completed' | 'OnHold' | 'Pending';
+
 export type ItemProps = {
   id: string;
   type: string;
   title: string;
   author?: string;
+  developer?: string;
   rating?: number;
   opinion: string;
   image: string;
   subtype: string;
   order: number;
-  status?: BookStatus;
+  status?: BookStatus | GameStatus;
   updatedAt?: string;
 }
 
@@ -25,4 +28,11 @@ export type BookSearchResult = {
   openLibraryId: string | null;
   thumbnail: string | null;
   googleBooksId: string;
+};
+
+export type GameSearchResult = {
+  title: string;
+  developer: string;
+  thumbnail: string | null;
+  gameId: string;
 };

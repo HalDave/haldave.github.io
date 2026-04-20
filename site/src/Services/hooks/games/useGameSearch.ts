@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
-import { BookSearchResult } from "../../Types/types";
+import { GameSearchResult } from "../../../Types/types";
 
-export const useBookSearch = (query: string) => {
+export const useGameSearch = (query: string) => {
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
   useEffect(() => {
@@ -10,11 +10,11 @@ export const useBookSearch = (query: string) => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const { isLoading, data } = useQuery<BookSearchResult[]>(
-    ["bookSearch", debouncedQuery],
+  const { isLoading, data } = useQuery<GameSearchResult[]>(
+    ["gameSearch", debouncedQuery],
     () =>
       fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/books/search?query=${encodeURIComponent(debouncedQuery)}`
+        `${process.env.REACT_APP_API_BASE_URL}/videogames/search?query=${encodeURIComponent(debouncedQuery)}`
       ).then((res) => res.json()),
     { enabled: !!debouncedQuery }
   );

@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { ItemProps } from "../../Types/types";
+import { ItemProps } from "../../../Types/types";
 
 export const useCurrentRead = () => {
   const { data, isLoading } = useQuery<ItemProps | null>(

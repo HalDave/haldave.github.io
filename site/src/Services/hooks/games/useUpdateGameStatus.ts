@@ -1,45 +1,38 @@
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { BookSearchResult } from "../../Types/types";
+import { GameStatus } from "../../../Types/types";
 
 const TOKEN_KEY = "dashboard_token";
 
-export const useAddPendingBook = () => {
+export const useUpdateGameStatus = () => {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  const addPendingBook = async (book: BookSearchResult) => {
+  const updateStatus = async (id: string, status: GameStatus, rating?: number, opinion?: string) => {
     setIsLoading(true);
     setError(null);
-    setSuccess(false);
-
     const token = sessionStorage.getItem(TOKEN_KEY);
-
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/books/save`,
+        `${process.env.REACT_APP_API_BASE_URL}/videogames/${id}/status`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            googleBooksId: book.googleBooksId,
-            isbn: book.isbn,
-            title: book.title,
-            author: book.author,
-            image: book.thumbnail ?? "",
-            status: "Pending",
+            status,
+            ...(rating !== undefined && { rating }),
+            ...(opinion && { opinion }),
           }),
         }
       );
       if (!res.ok) {
-        setError("Failed to save book");
+        setError("Failed to update status");
       } else {
-        setSuccess(true);
+        queryClient.invalidateQueries("currentGame");
         queryClient.invalidateQueries("Hobbies");
       }
     } catch {
@@ -49,5 +42,5 @@ export const useAddPendingBook = () => {
     }
   };
 
-  return { addPendingBook, isLoading, error, success };
+  return { updateStatus, isLoading, error };
 };

@@ -1,52 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
-import GridItem from "../UI/GridItem/GridItem";
-import BookCard from "../UI/BookCard/BookCard";
-import { useItems } from "../Services/hooks/useItems";
-import { compareItemsByOrder } from "../Types/types";
+import React, { useState } from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import BooksCollection from "./BooksCollection/BooksCollection";
+import VideoGamesCollection from "./VideoGamesCollection/VideoGamesCollection";
 
 const Hobbies = () => {
-  const { data } = useItems("Hobbies");
-  const [itemsBySubtype, setItemsBySubtype] = useState({});
+  const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
-    const subtypes = [
-      ...new Set(data?.map((item: any) => item.subtype)),
-    ] as string[];
-    const itemsBySubtype = subtypes.reduce((acc: any, subtype: string) => {
-      acc[subtype] = data?.filter((item: any) => item.subtype === subtype);
-      return acc;
-    }, {});
-    setItemsBySubtype(itemsBySubtype);
-  }, [data]);
-
-  console.log(itemsBySubtype);
   return (
     <div>
       <h1>My Interests</h1>
-      {Object.entries(itemsBySubtype).map(
-        ([subtype, items]: [string, unknown]) => (
-          <div key={subtype}>
-            <h2>{subtype}</h2>
-            <Grid
-              container
-              columnSpacing={1}
-              direction="row"
-              alignItems="left"
-              justifyContent="left"
-              sx={{ paddingRight: 6, paddingLeft: 6 }}
-            >
-              {(items as any[]).sort(compareItemsByOrder).map((item: any) =>
-                subtype === "Books" ? (
-                  <BookCard key={item.id} item={item} />
-                ) : (
-                  <GridItem key={item.id} item={item} />
-                )
-              )}
-            </Grid>
-          </div>
-        )
-      )}
+      <Tabs value={activeTab} onChange={(_e, val) => setActiveTab(val)} sx={{ mb: 3 }}>
+        <Tab label="Books" />
+        <Tab label="Videogames" />
+      </Tabs>
+
+      {activeTab === 0 && <Box><BooksCollection /></Box>}
+      {activeTab === 1 && <Box><VideoGamesCollection /></Box>}
     </div>
   );
 };

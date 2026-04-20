@@ -14,59 +14,61 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Close from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { ItemProps, BookStatus } from "../../Types/types";
+import { ItemProps, GameStatus } from "../../Types/types";
 import useScreenSize from "../../Services/ScreenSize";
-import { useUpdateBookStatus } from "../../Services/hooks/books/useUpdateBookStatus";
-import { useDeleteBook } from "../../Services/hooks/books/useDeleteBook";
+import { useUpdateGameStatus } from "../../Services/hooks/games/useUpdateGameStatus";
+import { useDeleteGame } from "../../Services/hooks/games/useDeleteGame";
 import CompletionDialog from "../CompletionDialog/CompletionDialog";
 
-const statusLabel: Record<BookStatus, string> = {
+const statusLabel: Record<GameStatus, string> = {
   Completed: "Completed",
   OnHold: "On Hold",
-  Reading: "Reading",
+  Playing: "Playing",
   Pending: "Pending",
 };
 
-const statusColor: Record<BookStatus, "success" | "warning" | "primary" | "default"> = {
+const statusColor: Record<GameStatus, "success" | "warning" | "primary" | "default"> = {
   Completed: "success",
   OnHold: "warning",
-  Reading: "primary",
+  Playing: "primary",
   Pending: "default",
 };
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 
-const statusDateLabel = (status?: BookStatus, updatedAt?: string): string | null => {
+const statusDateLabel = (status?: GameStatus, updatedAt?: string): string | null => {
   if (!status || !updatedAt) return null;
   const date = formatDate(updatedAt);
   if (status === "Completed") return `Completed on ${date}`;
   if (status === "OnHold") return `On Hold since ${date}`;
-  if (status === "Reading") return `Started ${date}`;
+  if (status === "Playing") return `Started ${date}`;
   if (status === "Pending") return `Added ${date}`;
   return null;
 };
 
-const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolean }) => {
+const GameCard = ({ item, showActions }: { item: ItemProps; showActions?: boolean }) => {
   const { isMobile } = useScreenSize();
   const [expanded, setExpanded] = useState(false);
   const [completionOpen, setCompletionOpen] = useState(false);
-  const { updateStatus, isLoading } = useUpdateBookStatus();
-  const { deleteBook, isLoading: isDeleting } = useDeleteBook();
+  const { updateStatus, isLoading } = useUpdateGameStatus();
+  const { deleteGame, isLoading: isDeleting } = useDeleteGame();
 
-  const handleStatusChange = async (status: BookStatus) => {
-    await updateStatus(item.id, status);
+  const status = item.status as GameStatus | undefined;
+
+  const handleStatusChange = async (newStatus: GameStatus) => {
+    await updateStatus(item.id, newStatus);
     setExpanded(false);
   };
 
   const handleCompleted = (rating: number, opinion?: string) => {
-    updateStatus(item.id, 'Completed', rating, opinion);
+    updateStatus(item.id, "Completed", rating, opinion);
     setCompletionOpen(false);
     setExpanded(false);
   };
 
   const handleDelete = async () => {
-    await deleteBook(item.id);
+    await deleteGame(item.id);
     setExpanded(false);
   };
 
@@ -75,7 +77,7 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
       <Card sx={{ cursor: "pointer" }} onClick={() => setExpanded(true)}>
         <CardMedia
           component="img"
-          image={item.image}
+          image={item.image || "/placeholder-game.png"}
           alt={item.title}
           sx={{ objectFit: "cover", aspectRatio: "2/3" }}
         />
@@ -88,11 +90,11 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
               sx={{ mb: 0.5, mr: 0.5 }}
             />
           )}
-          {item.status && (
+          {status && (
             <Chip
               size="small"
-              label={statusLabel[item.status]}
-              color={statusColor[item.status]}
+              label={statusLabel[status]}
+              color={statusColor[status]}
               sx={{ mb: 0.5 }}
             />
           )}
@@ -112,33 +114,40 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
               </IconButton>
             }
           />
-          <CardMedia
-            component="img"
-            image={item.image}
-            alt={item.title}
-            sx={{ maxHeight: 480, objectFit: "contain" }}
-          />
+          {item.image && (
+            <CardMedia
+              component="img"
+              image={item.image}
+              alt={item.title}
+              sx={{ maxHeight: 480, objectFit: "contain" }}
+            />
+          )}
           <CardContent>
+            {item.developer && (
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                {item.developer}
+              </Typography>
+            )}
             {item.rating != null && (
               <Chip icon={<StarBorderIcon />} label={item.rating} sx={{ mb: 1, mr: 1 }} />
             )}
-            {item.status && (
+            {status && (
               <Chip
-                label={statusLabel[item.status]}
-                color={statusColor[item.status]}
+                label={statusLabel[status]}
+                color={statusColor[status]}
                 sx={{ mb: 1 }}
               />
             )}
-            {statusDateLabel(item.status, item.updatedAt) && (
+            {statusDateLabel(status, item.updatedAt) && (
               <Typography variant="caption" display="block" color="text.secondary" sx={{ mt: 1, mb: 1 }}>
-                {statusDateLabel(item.status, item.updatedAt)}
+                {statusDateLabel(status, item.updatedAt)}
               </Typography>
             )}
             <Typography variant="body1">{item.opinion}</Typography>
           </CardContent>
           {showActions && (
             <CardActions sx={{ px: 2, pb: 2, gap: 1, flexWrap: "wrap" }}>
-              {item.status && item.status !== 'Completed' && (
+              {status && status !== "Completed" && (
                 <Button
                   size="small"
                   variant="contained"
@@ -149,24 +158,24 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   Completed
                 </Button>
               )}
-              {item.status && (item.status === 'OnHold' || item.status === 'Pending' || item.status === 'Completed') && (
+              {status && (status === "OnHold" || status === "Pending" || status === "Completed") && (
                 <Button
                   size="small"
                   variant="outlined"
                   color="primary"
                   disabled={isLoading}
-                  onClick={() => handleStatusChange('Reading')}
+                  onClick={() => handleStatusChange("Playing")}
                 >
-                  {item.status === 'Completed' ? 'Re-read' : 'Resume Reading'}
+                  {status === "Completed" ? "Re-play" : "Resume Playing"}
                 </Button>
               )}
-              {item.status === 'Reading' && (
+              {status === "Playing" && (
                 <Button
                   size="small"
                   variant="outlined"
                   color="warning"
                   disabled={isLoading}
-                  onClick={() => handleStatusChange('OnHold')}
+                  onClick={() => handleStatusChange("OnHold")}
                 >
                   On Hold
                 </Button>
@@ -193,4 +202,4 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
   );
 };
 
-export default BookCard;
+export default GameCard;

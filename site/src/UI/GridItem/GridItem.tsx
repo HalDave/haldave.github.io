@@ -9,12 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
-import { ItemProps } from "../Types/types";
+import { ItemProps } from "../../Types/types";
 import Close from "@mui/icons-material/Close";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Dialog from "@mui/material/Dialog";
-import useScreenSize from "../Services/ScreenSize";
+import useScreenSize from "../../Services/ScreenSize";
+import styles from "./GridItem.module.css";
 
 const GridItem = ({ item }: { item: ItemProps }) => {
   const { isMobile } = useScreenSize();
@@ -25,7 +25,7 @@ const GridItem = ({ item }: { item: ItemProps }) => {
   };
   return (
     <Grid item xs={12} sm={12} md={6} lg={4} sx={{ width: "100%" }}>
-      <StyledCard onClick={handleExpandClick}>
+      <Card className={styles.card} onClick={handleExpandClick}>
         <Grid container direction="row" sx={{ cursor: "pointer" }}>
           <Grid item xs={2} sm={3}>
             <CardMedia
@@ -54,7 +54,7 @@ const GridItem = ({ item }: { item: ItemProps }) => {
             </CardContent>
           </Grid>
         </Grid>
-      </StyledCard>
+      </Card>
       <Dialog open={expanded} onClose={handleExpandClick} fullScreen={isMobile}>
         <Card sx={{ height: "100%" }}>
           <CardHeader
@@ -80,9 +80,5 @@ const GridItem = ({ item }: { item: ItemProps }) => {
     </Grid>
   );
 };
-
-const StyledCard = styled(Card)`
-  padding: 16px;
-`;
 
 export default GridItem;

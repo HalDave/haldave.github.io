@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import GridItem from "../UI/GridItem";
+import GridItem from "../UI/GridItem/GridItem";
 import { useItems } from "../Services/hooks/useItems";
 import { compareItemsByOrder } from "../Types/types";
 

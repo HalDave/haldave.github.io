@@ -2,6 +2,7 @@
   "name": "site",
   "version": "0.1.0",
   "homepage": "https://haldave.github.io",
+  "proxy": "https://haldave-github-pages-webapp.azurewebsites.net",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",

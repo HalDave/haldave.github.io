@@ -11,8 +11,35 @@ import Dialog from "@mui/material/Dialog";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Close from "@mui/icons-material/Close";
-import { ItemProps } from "../../Types/types";
+import { ItemProps, BookStatus } from "../../Types/types";
 import useScreenSize from "../../Services/ScreenSize";
+
+const statusLabel: Record<BookStatus, string> = {
+  Completed: "Completed",
+  OnHold: "On Hold",
+  Reading: "Reading",
+  Pending: "Pending",
+};
+
+const statusColor: Record<BookStatus, "success" | "warning" | "primary" | "default"> = {
+  Completed: "success",
+  OnHold: "warning",
+  Reading: "primary",
+  Pending: "default",
+};
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+
+const statusDateLabel = (status?: BookStatus, updatedAt?: string): string | null => {
+  if (!status || !updatedAt) return null;
+  const date = formatDate(updatedAt);
+  if (status === "Completed") return `Completed on ${date}`;
+  if (status === "OnHold") return `On Hold since ${date}`;
+  if (status === "Reading") return `Started ${date}`;
+  if (status === "Pending") return `Added ${date}`;
+  return null;
+};
 
 const BookCard = ({ item }: { item: ItemProps }) => {
   const { isMobile } = useScreenSize();
@@ -33,6 +60,14 @@ const BookCard = ({ item }: { item: ItemProps }) => {
               size="small"
               icon={<StarIcon fontSize="small" />}
               label={item.rating}
+              sx={{ mb: 0.5, mr: 0.5 }}
+            />
+          )}
+          {item.status && (
+            <Chip
+              size="small"
+              label={statusLabel[item.status]}
+              color={statusColor[item.status]}
               sx={{ mb: 0.5 }}
             />
           )}
@@ -60,7 +95,19 @@ const BookCard = ({ item }: { item: ItemProps }) => {
           />
           <CardContent>
             {item.rating != null && (
-              <Chip icon={<StarBorderIcon />} label={item.rating} sx={{ mb: 1 }} />
+              <Chip icon={<StarBorderIcon />} label={item.rating} sx={{ mb: 1, mr: 1 }} />
+            )}
+            {item.status && (
+              <Chip
+                label={statusLabel[item.status]}
+                color={statusColor[item.status]}
+                sx={{ mb: 1 }}
+              />
+            )}
+            {statusDateLabel(item.status, item.updatedAt) && (
+              <Typography variant="caption" display="block" color="text.secondary" sx={{ mt: 1, mb: 1 }}>
+                {statusDateLabel(item.status, item.updatedAt)}
+              </Typography>
             )}
             <Typography variant="body1">{item.opinion}</Typography>
           </CardContent>

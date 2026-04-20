@@ -54,6 +54,8 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
   const { updateStatus, isLoading } = useUpdateBookStatus();
   const { deleteBook, isLoading: isDeleting } = useDeleteBook();
 
+  const status = item.status as BookStatus | undefined;
+
   const handleStatusChange = async (status: BookStatus) => {
     await updateStatus(item.id, status);
     setExpanded(false);
@@ -88,11 +90,11 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
               sx={{ mb: 0.5, mr: 0.5 }}
             />
           )}
-          {item.status && (
+          {status && (
             <Chip
               size="small"
-              label={statusLabel[item.status]}
-              color={statusColor[item.status]}
+              label={statusLabel[status]}
+              color={statusColor[status]}
               sx={{ mb: 0.5 }}
             />
           )}
@@ -122,23 +124,23 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
             {item.rating != null && (
               <Chip icon={<StarBorderIcon />} label={item.rating} sx={{ mb: 1, mr: 1 }} />
             )}
-            {item.status && (
+            {status && (
               <Chip
-                label={statusLabel[item.status]}
-                color={statusColor[item.status]}
+                label={statusLabel[status]}
+                color={statusColor[status]}
                 sx={{ mb: 1 }}
               />
             )}
-            {statusDateLabel(item.status, item.updatedAt) && (
+            {statusDateLabel(status, item.updatedAt) && (
               <Typography variant="caption" display="block" color="text.secondary" sx={{ mt: 1, mb: 1 }}>
-                {statusDateLabel(item.status, item.updatedAt)}
+                {statusDateLabel(status, item.updatedAt)}
               </Typography>
             )}
             <Typography variant="body1">{item.opinion}</Typography>
           </CardContent>
           {showActions && (
             <CardActions sx={{ px: 2, pb: 2, gap: 1, flexWrap: "wrap" }}>
-              {item.status && item.status !== 'Completed' && (
+              {status && status !== 'Completed' && (
                 <Button
                   size="small"
                   variant="contained"
@@ -149,7 +151,7 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   Completed
                 </Button>
               )}
-              {item.status && (item.status === 'OnHold' || item.status === 'Pending' || item.status === 'Completed') && (
+              {status && (status === 'OnHold' || status === 'Pending' || status === 'Completed') && (
                 <Button
                   size="small"
                   variant="outlined"
@@ -157,10 +159,10 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
                   disabled={isLoading}
                   onClick={() => handleStatusChange('Reading')}
                 >
-                  {item.status === 'Completed' ? 'Re-read' : 'Resume Reading'}
+                  {status === 'Completed' ? 'Re-read' : 'Resume Reading'}
                 </Button>
               )}
-              {item.status === 'Reading' && (
+              {status === 'Reading' && (
                 <Button
                   size="small"
                   variant="outlined"

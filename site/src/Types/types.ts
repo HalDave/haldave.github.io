@@ -7,6 +7,7 @@ export type ItemProps = {
   image: string;
   subtype: string;
   order: number;
+  currentRead?: boolean;
 }
 
 export function compareItemsByOrder(a: any, b: any) {

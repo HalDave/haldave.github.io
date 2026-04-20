@@ -38,7 +38,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={`App ${styles.appRoot}`}>
       <QueryClientProvider client={itemsQueryClient}>
         <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
           <CssBaseline />
@@ -48,24 +48,24 @@ function App() {
             isMobile={isMobile}
             onClose={handleDrawerToggle}
           />
-          <div
-            className={`${styles.contentContainer}${!isMobile ? ` ${styles.desktop}` : ""}`}
-          >
-            <Routes>
-              <Route path="/" element={<About />} />
-              <Route path="work" element={<Work />} />
-              <Route path="hobbies" element={<Hobbies />} />
-              <Route
-                path="dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
+          <div className={`${styles.mainArea}${!isMobile ? ` ${styles.desktop}` : ""}`}>
+            <div className={styles.contentContainer}>
+              <Routes>
+                <Route path="/" element={<About />} />
+                <Route path="work" element={<Work />} />
+                <Route path="hobbies" element={<Hobbies />} />
+                <Route
+                  path="dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </div>
+            <BottomBar isDarkTheme={isDarkTheme} />
           </div>
-          <BottomBar isDarkTheme={isDarkTheme} />
         </ThemeProvider>
       </QueryClientProvider>
     </div>

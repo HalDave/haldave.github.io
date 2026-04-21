@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
@@ -7,6 +8,8 @@ import CurrentGameCard from '../../UI/CurrentGameCard/CurrentGameCard';
 import GameSearchAutocomplete from '../../UI/GameSearchAutocomplete/GameSearchAutocomplete';
 import FeedbackSnackbar from '../../UI/FeedbackSnackbar/FeedbackSnackbar';
 import GameCard from '../../UI/GameCard/GameCard';
+import GridDensityToggle from '../../UI/GridDensityToggle/GridDensityToggle';
+import useGridDensity from '../../Services/hooks/useGridDensity';
 import { useGameSearch } from '../../Services/hooks/games/useGameSearch';
 import { useAddCurrentGame } from '../../Services/hooks/games/useAddCurrentGame';
 import { useAddPendingGame } from '../../Services/hooks/games/useAddPendingGame';
@@ -22,6 +25,7 @@ const VideoGamesDashboard = () => {
   const { addPendingGame, isLoading: isTbpSaving, error: tbpError, success: tbpSuccess } = useAddPendingGame();
   const { currentGame, isLoading: isLoadingCurrentGame } = useCurrentGame();
   const { games, isLoading: isLoadingGames } = useGames();
+  const { density, setDensity } = useGridDensity();
 
   return (
     <>
@@ -55,11 +59,16 @@ const VideoGamesDashboard = () => {
       {isLoadingGames ? (
         <CircularProgress />
       ) : (
-        <Grid container columnSpacing={1} direction="row" sx={{ paddingRight: 6, paddingLeft: 6 }}>
-          {games.map((item) => (
-            <GameCard key={item.id} item={item} showActions />
-          ))}
-        </Grid>
+        <>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1, px: 6 }}>
+            <GridDensityToggle density={density} onChange={setDensity} />
+          </Box>
+          <Grid container columnSpacing={1} direction="row" sx={{ paddingRight: 6, paddingLeft: 6 }}>
+            {games.map((item) => (
+              <GameCard key={item.id} item={item} showActions density={density} />
+            ))}
+          </Grid>
+        </>
       )}
 
       <FeedbackSnackbar open={gameSuccess} message="Game saved as currently playing!" severity="success" />

@@ -14,7 +14,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Close from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { ItemProps, GameStatus } from "../../Types/types";
+import { ItemProps, GameStatus, GridDensity } from "../../Types/types";
 import useScreenSize from "../../Services/ScreenSize";
 import { useUpdateGameStatus } from "../../Services/hooks/games/useUpdateGameStatus";
 import { useDeleteGame } from "../../Services/hooks/games/useDeleteGame";
@@ -47,7 +47,12 @@ const statusDateLabel = (status?: GameStatus, updatedAt?: string): string | null
   return null;
 };
 
-const GameCard = ({ item, showActions }: { item: ItemProps; showActions?: boolean }) => {
+const gridItemSize: Record<GridDensity, { xs: number; sm: number; md: number; lg: number }> = {
+  comfortable: { xs: 6, sm: 4, md: 3, lg: 2 },
+  compact:     { xs: 4, sm: 3, md: 2, lg: 1 },
+};
+
+const GameCard = ({ item, showActions, density = 'comfortable' }: { item: ItemProps; showActions?: boolean; density?: GridDensity }) => {
   const { isMobile } = useScreenSize();
   const [expanded, setExpanded] = useState(false);
   const [completionOpen, setCompletionOpen] = useState(false);
@@ -73,7 +78,7 @@ const GameCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
   };
 
   return (
-    <Grid item xs={6} sm={4} md={3} lg={2} sx={{ width: "100%" }}>
+    <Grid item {...gridItemSize[density]} sx={{ width: "100%" }}>
       <Card
         sx={{ cursor: "pointer" }}
         onClick={() => setExpanded(true)}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
@@ -7,6 +8,8 @@ import CurrentReadCard from '../../UI/CurrentReadCard/CurrentReadCard';
 import BookSearchAutocomplete from '../../UI/BookSearchAutocomplete/BookSearchAutocomplete';
 import FeedbackSnackbar from '../../UI/FeedbackSnackbar/FeedbackSnackbar';
 import BookCard from '../../UI/BookCard/BookCard';
+import GridDensityToggle from '../../UI/GridDensityToggle/GridDensityToggle';
+import useGridDensity from '../../Services/hooks/useGridDensity';
 import { useBookSearch } from '../../Services/hooks/books/useBookSearch';
 import { useAddCurrentRead } from '../../Services/hooks/books/useAddCurrentRead';
 import { useAddPendingBook } from '../../Services/hooks/books/useAddPendingBook';
@@ -22,6 +25,7 @@ const BooksDashboard = () => {
   const { addPendingBook, isLoading: isTbrSaving, error: tbrError, success: tbrSuccess } = useAddPendingBook();
   const { currentRead, isLoading: isLoadingCurrent } = useCurrentRead();
   const { books, isLoading: isLoadingBooks } = useBooks();
+  const { density, setDensity } = useGridDensity();
 
   return (
     <>
@@ -55,11 +59,16 @@ const BooksDashboard = () => {
       {isLoadingBooks ? (
         <CircularProgress />
       ) : (
-        <Grid container columnSpacing={1} direction="row" sx={{ paddingRight: 6, paddingLeft: 6 }}>
-          {books.map((item) => (
-            <BookCard key={item.id} item={item} showActions />
-          ))}
-        </Grid>
+        <>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1, px: 6 }}>
+            <GridDensityToggle density={density} onChange={setDensity} />
+          </Box>
+          <Grid container columnSpacing={1} direction="row" sx={{ paddingRight: 6, paddingLeft: 6 }}>
+            {books.map((item) => (
+              <BookCard key={item.id} item={item} showActions density={density} />
+            ))}
+          </Grid>
+        </>
       )}
 
       <FeedbackSnackbar open={success} message="Book saved as current read!" severity="success" />

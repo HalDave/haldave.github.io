@@ -2,6 +2,8 @@ export type BookStatus = 'Reading' | 'Completed' | 'OnHold' | 'Pending';
 
 export type GameStatus = 'Playing' | 'Completed' | 'OnHold' | 'Pending';
 
+export type GridDensity = 'comfortable' | 'compact';
+
 export type ItemProps = {
   id: string;
   type: string;

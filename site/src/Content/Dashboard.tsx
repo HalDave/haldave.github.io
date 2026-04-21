@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import BooksDashboard from './BooksDashboard/BooksDashboard';
-import VideoGamesDashboard from './VideoGamesDashboard/VideoGamesDashboard';
+import BooksDashboard from './books/BooksDashboard';
+import VideoGamesDashboard from './games/VideoGamesDashboard';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);

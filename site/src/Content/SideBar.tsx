@@ -36,7 +36,7 @@ export default function SideBar({isMobile, mobileOpen, onClose}: SideBarProps) {
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
         <List>
-          {['About', 'Work', 'Hobbies', 'Dashboard'].map((text, index) =>
+          {['About', 'Hobbies', 'Work', 'Dashboard'].map((text, index) =>
             (
               <ListItem key={text} disablePadding
                 secondaryAction={text === 'Dashboard' ? <LockIcon fontSize="small" color="disabled" /> : null}

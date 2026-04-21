@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./App.module.css";
 import TopBar from "../UI/TopBar";
-import Sidebar from "../UI/SideBar";
+import Sidebar from "../Content/SideBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useThemeDetector } from "../Services/ThemeDetector";
@@ -52,8 +52,8 @@ function App() {
             <div className={styles.contentContainer}>
               <Routes>
                 <Route path="/" element={<About />} />
-                <Route path="work" element={<Work />} />
                 <Route path="hobbies" element={<Hobbies />} />
+                <Route path="work" element={<Work />} />
                 <Route
                   path="dashboard"
                   element={

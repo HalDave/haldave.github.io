@@ -1,10 +1,20 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import GameCard from '../../UI/GameCard/GameCard';
 import { useGames } from '../../Services/hooks/games/useGames';
 
 const VideoGamesCollection = () => {
-  const { games } = useGames();
+  const { games, isLoading } = useGames();
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Grid

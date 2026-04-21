@@ -1,10 +1,20 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import BookCard from '../../UI/BookCard/BookCard';
 import { useBooks } from '../../Services/hooks/books/useBooks';
 
 const BooksCollection = () => {
-  const { books } = useBooks();
+  const { books, isLoading } = useBooks();
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Grid

@@ -7,11 +7,12 @@ interface Props {
   message: string;
   severity: AlertColor;
   autoHideDuration?: number;
+  onClose?: () => void;
 }
 
-const FeedbackSnackbar = ({ open, message, severity, autoHideDuration = 3000 }: Props) => (
-  <Snackbar open={open} autoHideDuration={autoHideDuration}>
-    <Alert severity={severity} variant="filled">{message}</Alert>
+const FeedbackSnackbar = ({ open, message, severity, autoHideDuration = 3000, onClose }: Props) => (
+  <Snackbar open={open} autoHideDuration={autoHideDuration} onClose={onClose}>
+    <Alert severity={severity} variant="filled" onClose={onClose}>{message}</Alert>
   </Snackbar>
 );
 

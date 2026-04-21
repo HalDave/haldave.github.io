@@ -31,8 +31,9 @@ const CompletionDialog = ({ open, onClose, onConfirm, isLoading }: Props) => {
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           <Box>
-            <Typography variant="body2" gutterBottom>Rating *</Typography>
+            <Typography id="rating-label" variant="body2" gutterBottom>Rating *</Typography>
             <Rating
+              aria-labelledby="rating-label"
               value={rating}
               onChange={(_e, val) => setRating(val)}
               max={10}

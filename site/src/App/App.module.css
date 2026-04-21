@@ -18,3 +18,20 @@
 .contentContainer {
   flex: 1;
 }
+
+.skipLink {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #1976d2;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skipLink:focus {
+  left: 8px;
+}

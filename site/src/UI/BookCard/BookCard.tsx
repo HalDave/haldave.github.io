@@ -74,7 +74,19 @@ const BookCard = ({ item, showActions }: { item: ItemProps; showActions?: boolea
 
   return (
     <Grid item xs={6} sm={4} md={3} lg={2} sx={{ width: "100%" }}>
-      <Card sx={{ cursor: "pointer" }} onClick={() => setExpanded(true)}>
+      <Card
+        sx={{ cursor: "pointer" }}
+        onClick={() => setExpanded(true)}
+        role="button"
+        tabIndex={0}
+        aria-label={`View details for ${item.title}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setExpanded(true);
+          }
+        }}
+      >
         <CardMedia
           component="img"
           image={item.image}

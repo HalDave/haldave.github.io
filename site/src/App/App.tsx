@@ -39,6 +39,9 @@ function App() {
 
   return (
     <div className={`App ${styles.appRoot}`}>
+      <a href="#main-content" className={styles.skipLink}>
+        Skip to main content
+      </a>
       <QueryClientProvider client={itemsQueryClient}>
         <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
           <CssBaseline />
@@ -49,7 +52,7 @@ function App() {
             onClose={handleDrawerToggle}
           />
           <div className={`${styles.mainArea}${!isMobile ? ` ${styles.desktop}` : ""}`}>
-            <div className={styles.contentContainer}>
+            <div id="main-content" className={styles.contentContainer}>
               <Routes>
                 <Route path="/" element={<About />} />
                 <Route path="hobbies" element={<Hobbies />} />

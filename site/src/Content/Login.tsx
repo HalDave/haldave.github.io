@@ -23,6 +23,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
   return (
     <Box
       component="form"
+      aria-labelledby="login-heading"
       onSubmit={handleSubmit}
       sx={{
         display: "flex",
@@ -33,7 +34,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
         alignItems: "center",
       }}
     >
-      <Typography variant="h5">Dashboard</Typography>
+      <Typography variant="h5" component="h1" id="login-heading">Dashboard</Typography>
       <TextField
         label="Password"
         type="password"

@@ -25,7 +25,19 @@ const GridItem = ({ item }: { item: ItemProps }) => {
   };
   return (
     <Grid item xs={12} sm={12} md={6} lg={4} sx={{ width: "100%" }}>
-      <Card className={styles.card} onClick={handleExpandClick}>
+      <Card
+        className={styles.card}
+        onClick={handleExpandClick}
+        role="button"
+        tabIndex={0}
+        aria-label={`View details for ${item.title}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleExpandClick();
+          }
+        }}
+      >
         <Grid container direction="row" sx={{ cursor: "pointer" }}>
           <Grid item xs={2} sm={3}>
             <CardMedia
@@ -60,7 +72,7 @@ const GridItem = ({ item }: { item: ItemProps }) => {
           <CardHeader
             title={item.title}
             action={
-              <IconButton aria-label="settings" onClick={handleExpandClick}>
+              <IconButton aria-label="close" onClick={handleExpandClick}>
                 <Close />
               </IconButton>
             }

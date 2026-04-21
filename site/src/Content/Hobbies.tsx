@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import BooksCollection from "./books/BooksCollection";
 import VideoGamesCollection from "./games/VideoGamesCollection";
 
@@ -9,16 +10,22 @@ const Hobbies = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div>
-      <h1>My Interests</h1>
+    <Box component="article" sx={{ px: 2, py: 3 }}>
+      <Typography variant="h1" sx={{ fontSize: '2rem', fontWeight: 700, mb: 3 }}>
+        My Interests
+      </Typography>
       <Tabs value={activeTab} onChange={(_e, val) => setActiveTab(val)} sx={{ mb: 3 }}>
-        <Tab label="Books" />
-        <Tab label="Videogames" />
+        <Tab id="tab-books" aria-controls="tabpanel-books" label="Books" />
+        <Tab id="tab-videogames" aria-controls="tabpanel-videogames" label="Videogames" />
       </Tabs>
 
-      {activeTab === 0 && <Box><BooksCollection /></Box>}
-      {activeTab === 1 && <Box><VideoGamesCollection /></Box>}
-    </div>
+      <div role="tabpanel" id="tabpanel-books" aria-labelledby="tab-books" hidden={activeTab !== 0}>
+        <Box><BooksCollection /></Box>
+      </div>
+      <div role="tabpanel" id="tabpanel-videogames" aria-labelledby="tab-videogames" hidden={activeTab !== 1}>
+        <Box><VideoGamesCollection /></Box>
+      </div>
+    </Box>
   );
 };
 

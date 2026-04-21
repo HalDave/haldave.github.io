@@ -31,9 +31,7 @@ const About = () => {
       <Typography variant="body1" paragraph>
         The backend is a Node.js REST API written in TypeScript using Express,
         deployed as an Azure Web App. Data is persisted in Azure Cosmos DB via
-        the official SDK. Authentication uses JWT and bcrypt — the password hash
-        lives server-side as an environment variable and is never exposed to the
-        client.
+        the official SDK. Authentication uses JWT and bcrypt for password hashing.
       </Typography>
 
       <Typography variant="body1" paragraph>
